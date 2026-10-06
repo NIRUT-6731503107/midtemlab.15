@@ -1,0 +1,65 @@
+@baseUrl = http://localhost:8787/api
+@bookingId = replace-with-actual-id
+
+### 1. List equipment
+GET {{baseUrl}}/equipment
+
+### 2. List bookings
+GET {{baseUrl}}/bookings
+
+### 3. Create booking (201)
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+
+{
+  "equipmentId": "eq-1",
+  "borrowerName": "Somchai Jaidee",
+  "startAt": "2026-10-20T09:00:00.000Z",
+  "endAt": "2026-10-20T11:00:00.000Z",
+  "purpose": "Class presentation"
+}
+
+### 4. Get one booking (200)
+GET {{baseUrl}}/bookings/{{bookingId}}
+
+### 5. Update booking (200)
+PATCH {{baseUrl}}/bookings/{{bookingId}}
+Content-Type: application/json
+
+{
+  "equipmentId": "eq-1",
+  "borrowerName": "Somchai Jaidee",
+  "startAt": "2026-10-20T12:00:00.000Z",
+  "endAt": "2026-10-20T14:00:00.000Z",
+  "purpose": "Updated presentation"
+}
+
+### 6. Invalid time range (400)
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+
+{
+  "equipmentId": "eq-1",
+  "borrowerName": "Somchai Jaidee",
+  "startAt": "2026-10-21T11:00:00.000Z",
+  "endAt": "2026-10-21T09:00:00.000Z",
+  "purpose": "Invalid test"
+}
+
+### 7. Overlapping booking (409)
+POST {{baseUrl}}/bookings
+Content-Type: application/json
+
+{
+  "equipmentId": "eq-1",
+  "borrowerName": "Suda Dee",
+  "startAt": "2026-10-20T12:30:00.000Z",
+  "endAt": "2026-10-20T13:30:00.000Z",
+  "purpose": "Conflict test"
+}
+
+### 8. Missing booking (404)
+GET {{baseUrl}}/bookings/not-found
+
+### 9. Delete booking (204)
+DELETE {{baseUrl}}/bookings/{{bookingId}}
